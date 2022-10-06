@@ -35,11 +35,11 @@ app = Flask(__name__)
 
 # ———————————— SERVICE FUNCTIONS —————————————
 def check_string(a_string):
-    """ Analyse string for streaks """
+    """ Analyze string for streaks """
     orignal_string = copy(a_string)
     state = 'N/A'
     
-    # Lower chars then remove spaces and mark them with special char
+    # Lower chars then remove spaces and mark them with special char within ASCII letters set
     a_string = a_string.lower().replace(" ", "X"); 
     
     # Replace all breaking chars by a space
@@ -57,10 +57,10 @@ def check_string(a_string):
     
     # Group string by streaks
     # odds_even = odds_even.replace("X","")
-    clean_groups = [] # here all groups for indication
-    for n, c in groupby(odds_even):
-       num, count = n,sum(1 for i in c)
-       clean_groups.append((num, count))    
+    # clean_groups = [] # here all groups for indication
+    # for n, c in groupby(odds_even):
+    #    num, count = n,sum(1 for i in c)
+    #    clean_groups.append((num, count))    
     
     # Find the longest streak and its position
     max_streak_len = 0
@@ -91,9 +91,9 @@ def check_string(a_string):
             # Just one more symbol
             current_streak_len += 1
     
-    return {'a_string': a_string, 
+    return {'a_string': orignal_string, 
             'odds_even': odds_even, 
-            'clean_groups': clean_groups,
+            # 'clean_groups': clean_groups,
             'maxx': max_streak_len, 
             'x': max_streak_position, 
             'y': max_streak_position + max_streak_len + 1, 
@@ -106,10 +106,10 @@ def check_string(a_string):
 @app.route("/odd-even/", methods=['GET'])
 def computers():
     """ Endpoint handler
-        responds always sorted by model + filtering
+        
         Request example:
-            /odd-even/?model=123&disk_space=123&screen_size=123 """
-    data = [7,12]
+            /odd-even/?input=<string> """
+    data = [0,0]
 
     if len(request.args):
         # There are some arguments, filter data by the arguments
