@@ -36,11 +36,11 @@ app = Flask(__name__)
 # ———————————— SERVICE FUNCTIONS —————————————
 def check_string(a_string):
     """ Analyse string for streaks """
-    x,y = (0, len(a_string))
+    orignal_string = copy(a_string)
     state = 'N/A'
     
     # Lower chars then remove spaces and mark them with special char
-    a_string = a_string.lower().replace(" ","X"); 
+    a_string = a_string.lower().replace(" ", "X"); 
     
     # Replace all breaking chars by a space
     a_string = "".join([letter if letter in string.ascii_letters else " " for letter in a_string ])
@@ -56,28 +56,49 @@ def check_string(a_string):
             odds_even += letter
     
     # Group string by streaks
-    lst = [] # here all groups for indication
+    # odds_even = odds_even.replace("X","")
+    clean_groups = [] # here all groups for indication
     for n, c in groupby(odds_even):
        num, count = n,sum(1 for i in c)
-       lst.append((num, count))    
+       clean_groups.append((num, count))    
     
     # Find the longest streak and its position
-    position = 0
-    maxx = max([y for x,y in lst])
-    for streak_type, length in lst:
-        if (length == maxx) and (streak_type in ["0", "1"]):
-            state = streak_type
-            break;
-        position += length
+    max_streak_len = 0
+    max_streak_position = 0
+    current_streak_type = None
+    current_streak_len = 0
+    for x, letter in enumerate(odds_even):
+        if letter == "X":
+            # Skip spaces (replaced with "X")
+            pass
+        elif (letter == ' '):
+            # Group dividers (' ' — non-alphabetical)
+            if current_streak_len > max_streak_len:
+                max_streak_len = current_streak_len
+                max_streak_position = x - current_streak_len - 1
+                state = current_streak_type
+            current_streak_type = None
+            current_streak_len = 0
+        elif (letter != current_streak_type):
+            # Group dividers (odds & even)
+            if current_streak_len > max_streak_len:
+                max_streak_len = current_streak_len
+                max_streak_position = x - current_streak_len - 1
+                state = current_streak_type
+            current_streak_type = letter
+            current_streak_len = 1
+        else:
+            # Just one more symbol
+            current_streak_len += 1
     
     return {'a_string': a_string, 
             'odds_even': odds_even, 
-            'lst': lst, 
-            'maxx': maxx, 
-            'x': x, 
-            'y': y, 
-            'position': position,
-            'streak': a_string[position: position + maxx], 
+            'clean_groups': clean_groups,
+            'maxx': max_streak_len, 
+            'x': max_streak_position, 
+            'y': max_streak_position + max_streak_len + 1, 
+            'max_streak_position': max_streak_position,
+            'streak': orignal_string[max_streak_position: max_streak_position + max_streak_len + 1], 
             'state': state}
 
 
