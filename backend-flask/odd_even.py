@@ -43,18 +43,19 @@ def check_string(orignal_string):
     if not len(orignal_string):
         # empty input
         return default_response
+
     a_string = copy(orignal_string)
     state = 'N/A'
     markdown_string = ''
     streaks = []
     
-    # Lower chars then remove spaces and mark them with special char within ASCII letters set
+    # Lowcase, then remove spaces and mark them with special char ('X')
     a_string = a_string.lower().replace(" ", "X") 
     
-    # Replace all breaking chars by a space
+    # Replace all streak breaking chars with spaces — group dividers
     a_string = "".join([letter if letter in string.ascii_letters else " " for letter in a_string])
     
-    # Analyze
+    # Encode odds and evens with 1/0
     odds_even = ""
     for letter in a_string:
         if letter in EVENS:
@@ -71,7 +72,7 @@ def check_string(orignal_string):
         count = lenx if char not in ['X', ' '] else 0  # Count only correct chars
         clean_groups.append((char, count, lenx))  # build a list with each group details  
 
-    # Next — combine similar streaks split by spaces (marked 'X')
+    # Next — combine similar streaks that may be split by spaces (marked 'X')
     joined_groups = []
     groups_qty = len(clean_groups)
     idx = 0
@@ -90,7 +91,7 @@ def check_string(orignal_string):
         # if idx < groups_qty - 1:
         idx += 1
 
-    # Find maximum strak count
+    # Find maximum streak count
     counts_list = [count for char, count, lenx in joined_groups if char != ' ']
     if len(counts_list):
         maxx = max(counts_list)  
@@ -98,18 +99,20 @@ def check_string(orignal_string):
         # Something wrong with input string, no max??? exit...
         return default_response
 
-    position = 0
-    
     # Add fancy formatting
+    position = 0  # position in the input string
     for charx, count, lenx in joined_groups:
-        group_sub = str(escape(orignal_string[position:position + lenx]))
+        # Sanitize input string (no html!)
+        group_sub = str(escape(orignal_string[position:position + lenx])) 
+        # Check if max streak, skip special chars
         if (charx != ' ') and (count == maxx):
-            state = charx  # Type of group
-            streaks.append(group_sub)  # Group contents
+            state = charx  # Type of group odd/even
+            streaks.append(group_sub)  # If more than one max streak
             markdown_string += '<mark>' + group_sub + '</mark>'  # Add markdown
-            # markdown_string += group_sub   # Add markdown
+            # markdown_string += group_sub   # ** DEBUG **
         else:
-            markdown_string += group_sub  # Add text to output
+            # Just add the group to output
+            markdown_string += group_sub  
         position += lenx
 
     return {'input': orignal_string, 
