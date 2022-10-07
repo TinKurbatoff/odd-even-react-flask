@@ -32,18 +32,14 @@ LOCAL_DB = [
 DEFAULT_RESPONSE = {'markdown': '', 'maxx': 0}
 
 EVENS = [
-    letter for x,
-    letter in enumerate(
-        string.ascii_lowercase) if x % 2 == 0]
+    letter for x, letter in enumerate(
+            string.ascii_lowercase) if x % 2 == 0]
 ODDS = [
-    letter for x,
-    letter in enumerate(
-        string.ascii_lowercase) if x % 2 == 1]
-# ODDS = [letter if x % 2 == 1 for x, letter in
-# enumerate(string.ascii_lowercase)]
+    letter for x, letter in enumerate(
+            string.ascii_lowercase) if x % 2 == 1]
 
 app = Flask(__name__)
-CORS(app)
+CORS(app)  # CORS handler
 
 # ———————————— SERVICE FUNCTIONS —————————————
 
