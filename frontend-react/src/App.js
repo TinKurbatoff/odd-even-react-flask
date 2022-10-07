@@ -82,6 +82,7 @@ class App extends Component {
               <div className="mb-4">
                 <button
                   className="btn btn-primary"
+                  
                   onClick={this.resetInput}
                 >
                   Reset
@@ -103,10 +104,10 @@ class App extends Component {
                   </div>
                   <div className="mt-4 p-2"><label className="mt-4">Character Count: {this.charCount()}</label></div>
                   <button
-                    className="btn-sm"
+                    className="btn btn-info btn-sm"
                     onClick={this.showPerspective}
                   >
-                    Show Perspective
+                    Split highlight
                   </button>                  
             </div>
           </div>

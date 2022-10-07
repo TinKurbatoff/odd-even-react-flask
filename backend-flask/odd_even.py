@@ -71,7 +71,7 @@ def check_string(a_string):
     max_streak_position = 0
     current_streak_type = None
     current_streak_len = 0
-    for x, letter in enumerate(odds_even):
+    for x, letter in enumerate(odds_even+' '):
         if letter == "X":
             # Skip spaces (were replaced with "X")
             pass
@@ -80,7 +80,7 @@ def check_string(a_string):
             if current_streak_len > max_streak_len:
                 # Max group!
                 max_streak_len = current_streak_len
-                max_streak_position = x - current_streak_len
+                max_streak_position = x - current_streak_len - 1
                 state = current_streak_type
             
             if letter == ' ':
@@ -98,8 +98,8 @@ def check_string(a_string):
 
     if max_streak_len:
         markdown_string = orignal_string[:max_streak_position] + \
-                    '<mark>' + orignal_string[max_streak_position: max_streak_position + max_streak_len] + \
-                    '</mark>' + orignal_string[max_streak_position + max_streak_len:]
+                    '<mark>' + orignal_string[max_streak_position: max_streak_position + max_streak_len + 1] + \
+                    '</mark>' + orignal_string[max_streak_position + max_streak_len + 1:]
     return {'input': orignal_string, 
             'markdown': markdown_string,
             'odds_even': odds_even, 
@@ -108,7 +108,7 @@ def check_string(a_string):
             'x': max_streak_position, 
             'y': max_streak_position + max_streak_len, 
             'max_streak_position': max_streak_position,
-            'streak': orignal_string[max_streak_position: max_streak_position + max_streak_len], 
+            'streak': orignal_string[max_streak_position: max_streak_position + max_streak_len + 1], 
             'state': state
             }
 

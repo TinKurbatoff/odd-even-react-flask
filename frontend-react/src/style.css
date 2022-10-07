@@ -46,6 +46,7 @@ body {
 textarea {
   display: block;
   position: absolute;
+  color: transparent; 
   z-index: 2;
   margin: 0;
   border: 2px solid #74637f;
@@ -59,10 +60,10 @@ textarea {
 
 mark {
   border-radius: 4px;
-  color: transparent; 
+  /*color: transparent; */
   background-color: #c1d5e5;
   letter-spacing: 1px;
-  font: 20px 'Opens Sans', sans-serif;
+  font: 18px 'Opens Sans', sans-serif;
 }
 
 button {
