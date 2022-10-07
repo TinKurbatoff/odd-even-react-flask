@@ -41,6 +41,7 @@ def check_string(a_string):
     """ Analyze string for streaks """
     orignal_string = copy(a_string)
     state = 'N/A'
+    markdown_string = ''
     
     # Lower chars then remove spaces and mark them with special char within ASCII letters set
     a_string = a_string.lower().replace(" ", "X") 
@@ -94,7 +95,13 @@ def check_string(a_string):
             # Just one more symbol
             current_streak_len += 1
     
-    return {'a_string': orignal_string, 
+
+    if max_streak_len:
+        markdown_string = orignal_string[:max_streak_position] + \
+                    '<mark>' + orignal_string[max_streak_position: max_streak_position + max_streak_len + 1] + \
+                    '</mark>' + orignal_string[max_streak_position + max_streak_len + 1:]
+    return {'input': orignal_string, 
+            'markdown': markdown_string,
             'odds_even': odds_even, 
             # 'clean_groups': clean_groups,
             'maxx': max_streak_len, 

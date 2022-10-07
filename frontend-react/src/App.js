@@ -19,6 +19,7 @@ class App extends Component {
       flag: false,
       stringValue: 'Drop anought Agoe!',
       textHighlights: 'Drop <mark>anought</mark> Agoe!',
+      serverHighLights: '',
     };
   }
 
@@ -29,18 +30,16 @@ class App extends Component {
 
   onChange = (value) => {
     console.log(`CHAR COUNT ${this.state.stringValue.length}`);
-    const newValue = this.applyHighlights(value)
+    // const newValue = this.applyHighlights(value)
     axios
       .get(`https://1axm.com/odd-even/?input=${value}`)
-      // .get(`/odd-even/?input=${value}`)
-      .then((res) => console.log(res.data)) //this.setState({ todoList: res.data }))
+      .then((res) => this.setState({ serverHighLights: res.data }))
       .catch((err) => console.log(err));
-    
     this.setState({
          stringValue: value,
          // textHighlights: newValue,
-    });
-
+      });
+    console.log(this.state.serverHighLights);
   };
 
   resetInput = () => {
@@ -51,17 +50,18 @@ class App extends Component {
     // this.state.stringValue = '';
   };
 
-  applyHighlights = (text) => {
-    text = text
-      .replace(/\n$/g, '')
-      .replace(/[A-Z].*?\b/g, '<mark>$&</mark>');
-    return text;
-
-  }
+//   applyHighlights = (text) => {
+//     text = text
+//       .replace(/\n$/g, '')
+//       .replace(/[A-Z].*?\b/g, '<mark>$&</mark>');
+//     return text;
+// 
+//   }
 
   showHighlights = () => {
-    const text = this.applyHighlights(this.state.stringValue);
-    console.log(text)
+    // const text = this.applyHighlights(this.state.stringValue);
+    const text = this.state.serverHighLights.markdown;
+    console.log(text);
     return {__html: text}
   }
 
