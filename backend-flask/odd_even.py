@@ -91,7 +91,7 @@ def check_string(orignal_string):
 
     # clean_groups = [(char, count, lenx) if char != 'X' else () for char, count, lenx in clean_groups]    
 
-    maxx = max([count for char, count, lenx in clean_groups if char != ' '])  
+    maxx = max([count for char, count, lenx in joined_groups if char != ' '])  
 
     position = 0
     
@@ -102,6 +102,7 @@ def check_string(orignal_string):
             state = charx  # Type of group
             streaks.append(group_sub)  # Group contents
             markdown_string += '<mark>' + group_sub + '</mark>'  # Add markdown
+            # markdown_string += group_sub   # Add markdown
         else:
             markdown_string += group_sub  # Add text to output
         position += lenx

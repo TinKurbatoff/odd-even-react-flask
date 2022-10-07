@@ -40,7 +40,7 @@ body {
 .highlights {
   white-space: pre-wrap;
   word-wrap: break-word;
-  color: transparent;
+  /*color: transparent;*/
 }
 
 textarea {
@@ -60,10 +60,10 @@ textarea {
 
 mark {
   border-radius: 4px;
+  border: 1px;
   color: transparent; 
   background-color: #c1d5e5;
-  /*letter-spacing: 1px;*/
-  /*font: 18px 'Opens Sans', sans-serif;*/
+  padding: 0px;
 }
 
 button {
@@ -99,5 +99,5 @@ button {
 
 textarea:focus, button:focus {
   outline: none;
-  box-shadow: 0 0 0 2px #c6aada;
+  box-shadow: 0 0 0 2px #bbbb99;
 }
