@@ -89,9 +89,13 @@ def check_string(orignal_string):
         # if idx < groups_qty - 1:
         idx += 1
 
-    # clean_groups = [(char, count, lenx) if char != 'X' else () for char, count, lenx in clean_groups]    
-
-    maxx = max([count for char, count, lenx in joined_groups if char != ' '])  
+    # Find maximum strak count
+    counts_list = [count for char, count, lenx in joined_groups if char != ' ']
+    if len(counts_list):
+        maxx = max(counts_list)  
+    else: 
+        # Something wrong with input string, no max??? exit...
+        return {'markdown': orignal_string}
 
     position = 0
     
@@ -116,59 +120,6 @@ def check_string(orignal_string):
             'state': state,
             'streak': streaks,
             }
-
-
-    # Find the longest streak and its position
-    # max_streak_len = 0
-    # max_streak_position = 0
-    # current_streak_type = None
-    # the_group = ''
-    # current_group = ''
-    # current_streak_len = 0
-    # for x, letter in enumerate(odds_even + ' '):
-    #     if letter == "X":
-    #         # Skip spaces (were replaced with "X")
-    #         pass
-    #     elif (letter == ' ') or (letter != current_streak_type):
-    #         # Group end!
-    #         if current_streak_len > max_streak_len:
-    #             # Max group!
-    #             the_group = current_group
-    #             max_streak_len = current_streak_len
-    #             max_streak_position = x - current_streak_len 
-    #             state = current_streak_type
-    #         current_group = ''
-    #         if letter == ' ':
-    #             # Group devider — (' ' — non-alphabetical)
-    #             current_streak_type = None
-    #             current_streak_len = 0
-    #         else:
-    #             # Group dividers (odds & even)
-    #             current_streak_type = letter
-    #             current_streak_len = 1
-    #     else:
-    #         # Just one more symbol
-    #         current_group += letter
-    #         current_streak_len += 1
-    
-
-    # if max_streak_len:
-    #     markdown_string = orignal_string[:max_streak_position] + \
-    #                 '<mark>' + orignal_string[max_streak_position: max_streak_position + max_streak_len ] + \
-    #                 '</mark>' + orignal_string[max_streak_position + max_streak_len :]
-    # return {'input': orignal_string, 
-    #         'markdown': markdown_string,
-    #         'the_group': the_group,
-    #         'odds_even': odds_even, 
-    #         'clean_groups': clean_groups,
-    #         'maxx': maxx,
-    #         'max_streak_len': max_streak_len, 
-    #         'x': max_streak_position, 
-    #         'y': max_streak_position + max_streak_len, 
-    #         'max_streak_position': max_streak_position,
-    #         'streak': orignal_string[max_streak_position: max_streak_position + max_streak_len + 1], 
-    #         'state': state
-    #         }
 
 
 # ——————————————— ENDPOINTS ———————————————————
