@@ -2,16 +2,6 @@ import React, { Component } from "react";
 import axios from "axios";
 import "./style.css";
 
-const todoItems = [];
-
-class CharacterBox extends React.Component {
-  render() {
-    return (
-      <div>Character Count:{this.props.charCount}</div>
-    )
-  }
-}
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -20,12 +10,13 @@ class App extends Component {
       stringValue: 'Drop anought Agoe!',
       textHighlights: 'Drop <mark>anought</mark> Agoe!',
       serverHighLights: '',
+      maxStreakLength: 0,
     };
   }
 
   charCount = () => {
     const value = this.state.stringValue.length; 
-    return (<label> {value} </label>);
+    return (<>{value}</>);
     };
 
   onChange = (value) => {
@@ -34,7 +25,7 @@ class App extends Component {
     // value=value.replace(/\n$/g, '&')
     axios
       .get(`https://1axm.com/odd-even/?input=${value}`)
-      .then((res) => this.setState({ serverHighLights: res.data }))
+      .then((res) => this.setState({ serverHighLights: res.data, maxStreakLength: res.data.maxx }))
       .catch((err) => console.log(err));
     this.setState({
          stringValue: value,
@@ -44,42 +35,37 @@ class App extends Component {
   };
 
   resetInput = () => {
+    /* Reset input field */
     console.log(this.state.stringValue);
     this.setState({
          stringValue: '',
          serverHighLights: '',
     });
-    // this.state.stringValue = '';
   };
 
-//   applyHighlights = (text) => {
-//     text = text
-//       .replace(/\n$/g, '\n\n')
-//       .replace(/[A-Z].*?\b/g, '<mark>$&</mark>');
-//     return text;
-// 
-//   }
 
   showHighlights = () => {
-    // const text = this.applyHighlights(this.state.stringValue);
+    /* Show highlight markdown  */
     const text = this.state.serverHighLights.markdown;
     console.log(text);
     return {__html: text}
   }
 
   showPerspective = () => {
-  this.setState({flag: !this.state.flag});
-  console.log(this.state.flag)
+    /* Show show highlight underneath  */
+    this.setState({flag: !this.state.flag});
+    console.log(this.state.flag)
   };
 
   // Finally render
   render() {
     let containerState = this.state.flag ? 'container perspective' : 'container';
+    let maxStreakLength = this.state.maxStreakLength
     return (
       <main className={containerState} >
         <h1 className="text-white text-uppercase text-center my-4">Odd Even</h1>
         <div className="row">
-          <div className="col-md-6 col-sm-10 mx-auto p-0">
+          <div className="col-ml-2 col-sm-10 mx-auto">
             {/* <div className="card p-3 "> */}
               <div className="mb-4">
                 <button
@@ -103,7 +89,11 @@ class App extends Component {
                     onChange={(e) => this.onChange(e.target.value)}
                   />
                   </div>
-                  <div className="mt-4 p-2"><label className="mt-4">Character Count: {this.charCount()}</label></div>
+                  <div className="mt-4 mb-0 p-2 ">
+                    <label className="mt-2">Character Count: {this.charCount()}</label>&nbsp;</div>
+                  <div className="mt-0 mb-0 p-2 ">  
+                    <label className="mt-0 ml-8">Max streak length: {maxStreakLength}</label>
+                  </div>
                   <button
                     className="btn btn-info btn-sm"
                     onClick={this.showPerspective}

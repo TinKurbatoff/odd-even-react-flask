@@ -40,7 +40,7 @@ body {
 .highlights {
   white-space: pre-wrap;
   word-wrap: break-word;
-  /*color: transparent;*/
+  color: transparent;
 }
 
 textarea {

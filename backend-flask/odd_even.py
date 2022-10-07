@@ -39,9 +39,10 @@ CORS(app)
 # ———————————— SERVICE FUNCTIONS —————————————
 def check_string(orignal_string):
     """ Analyze string for streaks """
+    default_response = {'markdown': '', 'maxx': 0}
     if not len(orignal_string):
         # empty input
-        return {'markdown': ''}
+        return default_response
     a_string = copy(orignal_string)
     state = 'N/A'
     markdown_string = ''
@@ -95,7 +96,7 @@ def check_string(orignal_string):
         maxx = max(counts_list)  
     else: 
         # Something wrong with input string, no max??? exit...
-        return {'markdown': orignal_string}
+        return default_response
 
     position = 0
     
