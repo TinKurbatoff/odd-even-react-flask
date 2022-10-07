@@ -80,7 +80,7 @@ def check_string(a_string):
             if current_streak_len > max_streak_len:
                 # Max group!
                 max_streak_len = current_streak_len
-                max_streak_position = x - current_streak_len - 1
+                max_streak_position = x - current_streak_len
                 state = current_streak_type
             
             if letter == ' ':
@@ -98,17 +98,17 @@ def check_string(a_string):
 
     if max_streak_len:
         markdown_string = orignal_string[:max_streak_position] + \
-                    '<mark>' + orignal_string[max_streak_position: max_streak_position + max_streak_len + 1] + \
-                    '</mark>' + orignal_string[max_streak_position + max_streak_len + 1:]
+                    '<mark>' + orignal_string[max_streak_position: max_streak_position + max_streak_len] + \
+                    '</mark>' + orignal_string[max_streak_position + max_streak_len:]
     return {'input': orignal_string, 
             'markdown': markdown_string,
             'odds_even': odds_even, 
             # 'clean_groups': clean_groups,
             'maxx': max_streak_len, 
             'x': max_streak_position, 
-            'y': max_streak_position + max_streak_len + 1, 
+            'y': max_streak_position + max_streak_len, 
             'max_streak_position': max_streak_position,
-            'streak': orignal_string[max_streak_position: max_streak_position + max_streak_len + 1], 
+            'streak': orignal_string[max_streak_position: max_streak_position + max_streak_len], 
             'state': state
             }
 
