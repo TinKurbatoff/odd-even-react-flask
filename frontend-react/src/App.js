@@ -23,13 +23,8 @@ class App extends Component {
   }
 
   charCount = () => {
-    // return this.state.stringValue.length;
-    const value = this.state.stringValue; //.replace(/[A-Z].*?\b/g, '<mark></mark>')
-    // this.setState({
-    //      stringValue: value, 
-    // });
-    // this.state.stringValue = '2121';
-    return (<label> {this.state.stringValue.length} </label>);
+    const value = this.state.stringValue.length; 
+    return (<label> {value} </label>);
     };
 
   onChange = (value) => {
@@ -58,9 +53,20 @@ class App extends Component {
       .replace(/[A-Z].*?\b/g, '<mark>$&</mark>');
         
     return text;
+
   }
 
+  showHighlights = () => {
+    const text = this.applyHighlights(this.state.stringValue);
+    console.log(text)
+    return {__html: text}
+  }
 
+  showPerspective = () => {
+
+  };
+
+  // Finally render
   render() {
     return (
       <main className="container">
@@ -81,8 +87,8 @@ class App extends Component {
                 Streak counter
                 </label>  
                   <div className="backdrop">
-                    <div className="highlights">Drop <mark>anought</mark> Agoe!</div>
-                  </div>  
+                    <div className="highlights" dangerouslySetInnerHTML={this.showHighlights()}></div>  
+                  </div>
                   <textarea
                     name="inputField"
                     type="text"
@@ -91,8 +97,12 @@ class App extends Component {
                   />
                   </div>
                   <div className="mt-4 p-2"><label className="mt-4">Character Count: {this.charCount()}</label></div>
-                  {/* <CharacterBox charCount={this.props.value}/> */}
-                
+                  <button
+                    className="btn-sm"
+                    onClick={this.showPerspective}
+                  >
+                    Show Perspective
+                  </button>                  
             </div>
           </div>
         {/* </div> */}
