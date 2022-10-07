@@ -52,7 +52,7 @@ class App extends Component {
   }
 
   showPerspective = () => {
-    /* Show show highlight underneath  */
+    /* Show highlights underneath  */
     this.setState({flag: !this.state.flag});
     console.log(this.state.flag)
   };
