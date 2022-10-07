@@ -49,7 +49,7 @@ class App extends Component {
 
   applyHighlights = (text) => {
     text = text
-      .replace(/\n$/g, '\n\n')
+      .replace(/\n$/g, '')
       .replace(/[A-Z].*?\b/g, '<mark>$&</mark>');
         
     return text;
@@ -63,13 +63,15 @@ class App extends Component {
   }
 
   showPerspective = () => {
-
+  this.setState({flag: !this.state.flag});
+  console.log(this.state.flag)
   };
 
   // Finally render
   render() {
+    let containerState = this.state.flag ? 'container perspective' : 'container';
     return (
-      <main className="container">
+      <main className={containerState} >
         <h1 className="text-white text-uppercase text-center my-4">Odd Even</h1>
         <div className="row">
           <div className="col-md-6 col-sm-10 mx-auto p-0">
