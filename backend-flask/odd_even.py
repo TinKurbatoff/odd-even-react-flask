@@ -18,7 +18,7 @@ Here are some examples of what a finished product could look like.
 from copy import copy
 import string
 from itertools import groupby
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, escape
 
 from flask_cors import CORS
 
@@ -69,15 +69,35 @@ def check_string(orignal_string):
         lenx = sum(1 for i in substring)  # length of the substring
         count = lenx if char not in ['X', ' '] else 0  # Count only correct chars
         clean_groups.append((char, count, lenx))  # build a list with each group details  
+
     # Next — combine similar streaks split by spaces (marked 'X')
+    joined_groups = []
+    groups_qty = len(clean_groups)
+    idx = 0
+    # for _ in range(groups_qty):
+    while idx < groups_qty:
+        char, count, lenx = clean_groups[idx]
+        for idy in range(idx + 1, groups_qty):
+            char_y, count_y, leny = clean_groups[idy]
+            if (char_y != char) and (char_y != 'X'):
+                break
+            else:
+                count += count_y
+                lenx += leny
+                idx += 1  # skip the next group then
+        joined_groups.append((char, count, lenx)) 
+        # if idx < groups_qty - 1:
+        idx += 1
+
+    # clean_groups = [(char, count, lenx) if char != 'X' else () for char, count, lenx in clean_groups]    
 
     maxx = max([count for char, count, lenx in clean_groups if char != ' '])  
 
     position = 0
     
     # Add fancy formatting
-    for charx, count, lenx in clean_groups:
-        group_sub = orignal_string[position:position + lenx]
+    for charx, count, lenx in joined_groups:
+        group_sub = str(escape(orignal_string[position:position + lenx]))
         if (charx != ' ') and (count == maxx):
             state = charx  # Type of group
             streaks.append(group_sub)  # Group contents
@@ -90,6 +110,7 @@ def check_string(orignal_string):
             'markdown': markdown_string,
             'odds_even': odds_even, 
             'clean_groups': clean_groups,
+            'joined_groups': joined_groups,
             'maxx': maxx,
             'state': state,
             'streak': streaks,

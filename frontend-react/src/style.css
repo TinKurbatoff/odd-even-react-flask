@@ -60,7 +60,7 @@ textarea {
 
 mark {
   border-radius: 4px;
-  /*color: transparent; */
+  color: transparent; 
   background-color: #c1d5e5;
   /*letter-spacing: 1px;*/
   /*font: 18px 'Opens Sans', sans-serif;*/
