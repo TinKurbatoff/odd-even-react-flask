@@ -5,6 +5,7 @@ import "./style.css";
 class App extends Component {
   constructor(props) {
     super(props);
+    this.apiBaseUrl = process.env.REACT_APP_BASE_URL? process.env.REACT_APP_BASE_URL : 'http://localhost:22045';
     this.state = {
       flag: false,
       stringValue: 'Drop anought Agoe!',
@@ -24,7 +25,7 @@ class App extends Component {
     // const newValue = this.applyHighlights(value)
     // value=value.replace(/\n$/g, '&')
     axios
-      .get(`https://1axm.com/odd-even/?input=${value}`)
+      .get(`${this.apiBaseUrl}/odd-even/?input=${value}`)
       .then((res) => this.setState({ serverHighLights: res.data, maxStreakLength: res.data.maxx }))
       .catch((err) => console.log(err));
     this.setState({
@@ -94,6 +95,7 @@ class App extends Component {
                   <div className="mt-0 mb-0 p-2 ">  
                     <label className="mt-0 ml-8">Max streak length: {maxStreakLength}</label>
                   </div>
+                  <label className="p-2">BASE URL:{this.apiBaseUrl}</label>
                   <button
                     className="btn btn-info btn-sm"
                     onClick={this.showPerspective}
