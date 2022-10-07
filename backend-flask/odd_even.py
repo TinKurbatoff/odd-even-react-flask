@@ -37,11 +37,15 @@ app = Flask(__name__)
 CORS(app)
 
 # ———————————— SERVICE FUNCTIONS —————————————
-def check_string(a_string):
+def check_string(orignal_string):
     """ Analyze string for streaks """
-    orignal_string = copy(a_string)
+    if not len(orignal_string):
+        # empty input
+        return {'markdown': ''}
+    a_string = copy(orignal_string)
     state = 'N/A'
     markdown_string = ''
+    streaks = []
     
     # Lower chars then remove spaces and mark them with special char within ASCII letters set
     a_string = a_string.lower().replace(" ", "X") 
@@ -60,57 +64,89 @@ def check_string(a_string):
             odds_even += letter
     
     # Group string by streaks
-    # odds_even = odds_even.replace("X","")
-    # clean_groups = [] # here all groups for indication
-    # for n, c in groupby(odds_even):
-    #    num, count = n,sum(1 for i in c)
-    #    clean_groups.append((num, count))    
-    
-    # Find the longest streak and its position
-    max_streak_len = 0
-    max_streak_position = 0
-    current_streak_type = None
-    current_streak_len = 0
-    for x, letter in enumerate(odds_even+' '):
-        if letter == "X":
-            # Skip spaces (were replaced with "X")
-            pass
-        elif (letter == ' ') or (letter != current_streak_type):
-            # Group end!
-            if current_streak_len > max_streak_len:
-                # Max group!
-                max_streak_len = current_streak_len
-                max_streak_position = x - current_streak_len - 1
-                state = current_streak_type
-            
-            if letter == ' ':
-                # Group devider — (' ' — non-alphabetical)
-                current_streak_type = None
-                current_streak_len = 0
-            else:
-                # Group dividers (odds & even)
-                current_streak_type = letter
-                current_streak_len = 1
-        else:
-            # Just one more symbol
-            current_streak_len += 1
-    
+    clean_groups = []  # here all substrings
+    for char, substring in groupby(odds_even):
+        lenx = sum(1 for i in substring)  # length of the substring
+        count = lenx if char not in ['X', ' '] else 0  # Count only correct chars
+        clean_groups.append((char, count, lenx))  # build a list with each group details  
+    # Next — combine similar streaks split by spaces (marked 'X')
 
-    if max_streak_len:
-        markdown_string = orignal_string[:max_streak_position] + \
-                    '<mark>' + orignal_string[max_streak_position: max_streak_position + max_streak_len + 1] + \
-                    '</mark>' + orignal_string[max_streak_position + max_streak_len + 1:]
+    maxx = max([count for char, count, lenx in clean_groups if char != ' '])  
+
+    position = 0
+    
+    # Add fancy formatting
+    for charx, count, lenx in clean_groups:
+        group_sub = orignal_string[position:position + lenx]
+        if (charx != ' ') and (count == maxx):
+            state = charx  # Type of group
+            streaks.append(group_sub)  # Group contents
+            markdown_string += '<mark>' + group_sub + '</mark>'  # Add markdown
+        else:
+            markdown_string += group_sub  # Add text to output
+        position += lenx
+
     return {'input': orignal_string, 
             'markdown': markdown_string,
             'odds_even': odds_even, 
-            # 'clean_groups': clean_groups,
-            'maxx': max_streak_len, 
-            'x': max_streak_position, 
-            'y': max_streak_position + max_streak_len, 
-            'max_streak_position': max_streak_position,
-            'streak': orignal_string[max_streak_position: max_streak_position + max_streak_len + 1], 
-            'state': state
+            'clean_groups': clean_groups,
+            'maxx': maxx,
+            'state': state,
+            'streak': streaks,
             }
+
+
+    # Find the longest streak and its position
+    # max_streak_len = 0
+    # max_streak_position = 0
+    # current_streak_type = None
+    # the_group = ''
+    # current_group = ''
+    # current_streak_len = 0
+    # for x, letter in enumerate(odds_even + ' '):
+    #     if letter == "X":
+    #         # Skip spaces (were replaced with "X")
+    #         pass
+    #     elif (letter == ' ') or (letter != current_streak_type):
+    #         # Group end!
+    #         if current_streak_len > max_streak_len:
+    #             # Max group!
+    #             the_group = current_group
+    #             max_streak_len = current_streak_len
+    #             max_streak_position = x - current_streak_len 
+    #             state = current_streak_type
+    #         current_group = ''
+    #         if letter == ' ':
+    #             # Group devider — (' ' — non-alphabetical)
+    #             current_streak_type = None
+    #             current_streak_len = 0
+    #         else:
+    #             # Group dividers (odds & even)
+    #             current_streak_type = letter
+    #             current_streak_len = 1
+    #     else:
+    #         # Just one more symbol
+    #         current_group += letter
+    #         current_streak_len += 1
+    
+
+    # if max_streak_len:
+    #     markdown_string = orignal_string[:max_streak_position] + \
+    #                 '<mark>' + orignal_string[max_streak_position: max_streak_position + max_streak_len ] + \
+    #                 '</mark>' + orignal_string[max_streak_position + max_streak_len :]
+    # return {'input': orignal_string, 
+    #         'markdown': markdown_string,
+    #         'the_group': the_group,
+    #         'odds_even': odds_even, 
+    #         'clean_groups': clean_groups,
+    #         'maxx': maxx,
+    #         'max_streak_len': max_streak_len, 
+    #         'x': max_streak_position, 
+    #         'y': max_streak_position + max_streak_len, 
+    #         'max_streak_position': max_streak_position,
+    #         'streak': orignal_string[max_streak_position: max_streak_position + max_streak_len + 1], 
+    #         'state': state
+    #         }
 
 
 # ——————————————— ENDPOINTS ———————————————————

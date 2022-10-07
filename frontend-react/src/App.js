@@ -45,7 +45,8 @@ class App extends Component {
   resetInput = () => {
     console.log(this.state.stringValue);
     this.setState({
-         stringValue: 'ha-ha'
+         stringValue: '',
+         serverHighLights: '',
     });
     // this.state.stringValue = '';
   };
@@ -82,7 +83,6 @@ class App extends Component {
               <div className="mb-4">
                 <button
                   className="btn btn-primary"
-                  
                   onClick={this.resetInput}
                 >
                   Reset
