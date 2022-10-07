@@ -91,8 +91,10 @@ def check_string(orignal_string):
         for idy in range(idx + 1, groups_qty):
             char_y, count_y, leny = clean_groups[idy]
             if (char_y != char) and (char_y != 'X'):
-                break
+                # next group is different, stop
+                break 
             else:
+                # or join values!
                 count += count_y
                 lenx += leny
                 idx += 1  # skip the next group then
