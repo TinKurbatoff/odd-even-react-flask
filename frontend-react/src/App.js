@@ -28,9 +28,13 @@ class App extends Component {
     };
 
   onChange = (value) => {
-    // this.state.stringValue = value
     console.log(`CHAR COUNT ${this.state.stringValue.length}`);
     const newValue = this.applyHighlights(value)
+    axios
+      .get(`https://1axm.com/odd-even/?input=${value}`)
+      // .get(`/odd-even/?input=${value}`)
+      .then((res) => console.log(res.data)) //this.setState({ todoList: res.data }))
+      .catch((err) => console.log(err));
     
     this.setState({
          stringValue: value,
@@ -51,7 +55,6 @@ class App extends Component {
     text = text
       .replace(/\n$/g, '')
       .replace(/[A-Z].*?\b/g, '<mark>$&</mark>');
-        
     return text;
 
   }

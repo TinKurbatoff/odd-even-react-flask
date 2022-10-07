@@ -20,6 +20,8 @@ import string
 from itertools import groupby
 from flask import Flask, jsonify, request
 
+from flask_cors import CORS
+
 # ——————————————— VIRTUAL DATABASE —————————————————————
 LOCAL_DB = [
     {
@@ -27,11 +29,12 @@ LOCAL_DB = [
     },
 ]
 
-EVENS = [letter for x, letter in enumerate(string.ascii_lowercase) if x % 2 == 0 ]
-ODDS = [letter for x, letter in enumerate(string.ascii_lowercase) if x % 2 == 1 ]
+EVENS = [letter for x, letter in enumerate(string.ascii_lowercase) if x % 2 == 0]
+ODDS = [letter for x, letter in enumerate(string.ascii_lowercase) if x % 2 == 1]
 # ODDS = [letter if x % 2 == 1 for x, letter in enumerate(string.ascii_lowercase)]
 
 app = Flask(__name__)
+CORS(app)
 
 # ———————————— SERVICE FUNCTIONS —————————————
 def check_string(a_string):
@@ -40,10 +43,10 @@ def check_string(a_string):
     state = 'N/A'
     
     # Lower chars then remove spaces and mark them with special char within ASCII letters set
-    a_string = a_string.lower().replace(" ", "X"); 
+    a_string = a_string.lower().replace(" ", "X") 
     
     # Replace all breaking chars by a space
-    a_string = "".join([letter if letter in string.ascii_letters else " " for letter in a_string ])
+    a_string = "".join([letter if letter in string.ascii_letters else " " for letter in a_string])
     
     # Analyze
     odds_even = ""
@@ -69,24 +72,24 @@ def check_string(a_string):
     current_streak_len = 0
     for x, letter in enumerate(odds_even):
         if letter == "X":
-            # Skip spaces (replaced with "X")
+            # Skip spaces (were replaced with "X")
             pass
-        elif (letter == ' '):
-            # Group dividers (' ' — non-alphabetical)
+        elif (letter == ' ') or (letter != current_streak_type):
+            # Group end!
             if current_streak_len > max_streak_len:
+                # Max group!
                 max_streak_len = current_streak_len
                 max_streak_position = x - current_streak_len - 1
                 state = current_streak_type
-            current_streak_type = None
-            current_streak_len = 0
-        elif (letter != current_streak_type):
-            # Group dividers (odds & even)
-            if current_streak_len > max_streak_len:
-                max_streak_len = current_streak_len
-                max_streak_position = x - current_streak_len - 1
-                state = current_streak_type
-            current_streak_type = letter
-            current_streak_len = 1
+            
+            if letter == ' ':
+                # Group devider — (' ' — non-alphabetical)
+                current_streak_type = None
+                current_streak_len = 0
+            else:
+                # Group dividers (odds & even)
+                current_streak_type = letter
+                current_streak_len = 1
         else:
             # Just one more symbol
             current_streak_len += 1
@@ -99,7 +102,8 @@ def check_string(a_string):
             'y': max_streak_position + max_streak_len + 1, 
             'max_streak_position': max_streak_position,
             'streak': orignal_string[max_streak_position: max_streak_position + max_streak_len + 1], 
-            'state': state}
+            'state': state
+            }
 
 
 # ——————————————— ENDPOINTS ———————————————————
@@ -109,7 +113,7 @@ def computers():
         
         Request example:
             /odd-even/?input=<string> """
-    data = [0,0]
+    data = [0, 0]
 
     if len(request.args):
         # There are some arguments, filter data by the arguments
