@@ -95,7 +95,7 @@ class App extends Component {
                   <div className="mt-0 mb-0 p-2 ">  
                     <label className="mt-0 ml-8">Max streak length: {maxStreakLength}</label>
                   </div>
-                  <label className="p-2">BASE URL:{this.apiBaseUrl}</label>
+                  <p className="p-2"><em>BASE URL: {this.apiBaseUrl}</em></p>
                   <button
                     className="btn btn-info btn-sm"
                     onClick={this.showPerspective}
