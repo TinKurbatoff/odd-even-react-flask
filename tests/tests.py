@@ -9,6 +9,7 @@ Example (argument — an input file with test sequences):
 import requests
 from pathlib import Path
 import argparse
+import json
 
 
 BASE_URL = " https://www.1axm.com/odd-even/"
@@ -16,10 +17,15 @@ API_CALL = BASE_URL + "?input={sequence}"
 
 
 def test_rounds(input_sequences):
-    for test in input_sequences:
-        response = requests.get(API_CALL.replace("{sequence}", test['input']))
+    for sequence in input_sequences:
+        test_sequence = list(sequence.keys())[0]
+        response = requests.get(API_CALL.replace("{sequence}", test_sequence))
         output = response.json()
-        assert output['maxx'] == test['expected']
+        try:
+            print(f"{test_sequence} Expected: {sequence[test_sequence]} | Received: {output['maxx']}")
+            assert output['maxx'] == sequence[test_sequence]
+        except Exception as e:
+            print(f"^ —— Assertion failed [{e}]")
     return
 
 
@@ -46,12 +52,17 @@ def main():
     args = parser.parse_args()
     
     if Path(args.file).is_file():
-        print("File exist, commiting tests...")
+        print("File exist, committing tests...")
+        with open(args.file, "r") as f:
+            sequences = json.load(f)
+            num_of_sequence = len(sequences)
+            if num_of_sequence:
+                test_rounds(sequences)
     else:
         print(f"File {args.file} not exist")
         return
     
-    print(f'Committing {len()} tests ')
+    print(f'Committed {num_of_sequence} tests.')
     return
 
 
