@@ -6,7 +6,6 @@ Example (argument — an input file with test sequences):
 
   tests.py tests.json 
 """
-
 import requests
 from pathlib import Path
 import argparse
@@ -25,7 +24,6 @@ def test_rounds(input_sequences):
 
 
 def main():
-    import argparse
 
     parser = argparse.ArgumentParser(
         usage=__doc__
@@ -46,17 +44,15 @@ def main():
     )
 
     args = parser.parse_args()
-    if os.path.isfile('filename.txt'):
-    print ("File exist")
-else:
-    print ("File not exist")
-
-    if Path(args.file)
-    if test_rounds(args.file) == []:
-        print('Nothing to do.')
+    
+    if Path(args.file).is_file():
+        print("File exist, commiting tests...")
+    else:
+        print(f"File {args.file} not exist")
         return
-
+    
     print(f'Committing {len()} tests ')
+    return
 
 
 if __name__ == "__main__":
