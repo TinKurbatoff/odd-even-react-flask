@@ -67,22 +67,25 @@ def check_string(orignal_string):
             if group_type == current_group_type:
                 current_group_chars += 1
                 current_group_len += 1
-                if current_group_len > maxx:
-                    maxx = current_group_len
-                    # maxx_start = current_group_start
-                    # maxx_length = current_group_chars
-                    # maxx_type = current_group_type
             else:
-                joined_groups.append({
-                    'streak': a_string[current_group_start: current_group_start + current_group_chars], 
-                    'type': current_group_type, 
-                    'length': current_group_len, 
-                    'chars': current_group_chars
-                    })
+                if current_group_chars:
+                    # Skip empty groups
+                    joined_groups.append({
+                        'streak': a_string[current_group_start: current_group_start + current_group_chars], 
+                        'type': current_group_type, 
+                        'length': current_group_len, 
+                        'chars': current_group_chars
+                        })
                 current_group_type = ord(a_char) % 2
                 current_group_chars = 1
                 current_group_len = 1
                 current_group_start = idx
+            if current_group_len > maxx:
+                maxx = current_group_len
+                # maxx_start = current_group_start
+                # maxx_length = current_group_chars
+                # maxx_type = current_group_type
+                
         else:
             group_type = None
             current_group_len = 0
