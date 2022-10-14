@@ -50,6 +50,83 @@ def check_string(orignal_string):
         # empty input
         return DEFAULT_RESPONSE
 
+    joined_groups = []
+    streaks = []
+    maxx = 0
+    current_group_len = 0 
+    current_group_chars = 0
+    current_group_start = 0
+    current_group_type = None
+    a_string = copy(orignal_string)
+    for idx, a_char in enumerate(a_string):
+        if " " == a_char:
+            current_group_chars += 1
+        elif a_char.isalpha():
+            group_type = ord(a_char) % 2
+            # print(f"a_char: {a_char}:{group_type}")
+            if group_type == current_group_type:
+                current_group_chars += 1
+                current_group_len += 1
+                if current_group_len > maxx:
+                    maxx = current_group_len
+                    # maxx_start = current_group_start
+                    # maxx_length = current_group_chars
+                    # maxx_type = current_group_type
+            else:
+                joined_groups.append({
+                    'streak': a_string[current_group_start: current_group_start + current_group_chars], 
+                    'type': current_group_type, 
+                    'length': current_group_len, 
+                    'chars': current_group_chars
+                    })
+                current_group_type = ord(a_char) % 2
+                current_group_chars = 1
+                current_group_len = 1
+                current_group_start = idx
+        else:
+            group_type = None
+            current_group_len = 0
+    
+    joined_groups.append({
+        'streak': a_string[current_group_start: current_group_start + current_group_chars], 
+        'type': current_group_type, 
+        'length': current_group_len, 
+        'chars': current_group_chars
+        })
+    # streaks = [a_string[maxx_start:maxx_length]]
+
+    # Build output
+    markdown_string = ''
+    for group in joined_groups:
+        group_streak = group['streak']
+        if maxx == group['length']:
+            # Max
+            markdown_string += '<mark>' + group_streak + '</mark>'
+            streaks.append(group_streak)
+        elif 0 == group['type']:
+            # Odd, not max
+            markdown_string += '<odd-mark>' + group_streak + '</odd-mark>'
+        elif 1 == group['type']:
+            # Even, not max
+            markdown_string += '<even-mark>' + group_streak + '</even-mark>'
+        else:
+            # Other symbols
+            markdown_string += group['streak']
+
+    return {'input': orignal_string,
+            'markdown': markdown_string,
+            'joined_groups': joined_groups,
+            'maxx': maxx,
+            'streak': streaks,
+            }
+
+## ———————————— NOT IN USE ————————
+def check_string_original(orignal_string):
+    """ Analyze string for streaks """
+    if not len(orignal_string):
+        # empty input
+        return DEFAULT_RESPONSE
+
     a_string = copy(orignal_string)
     state = 'N/A'
     markdown_string = ''
@@ -139,7 +216,7 @@ def check_string(orignal_string):
 
 # ——————————————— ENDPOINTS ———————————————————
 @app.route("/odd-even/", methods=['GET'])
-def computers():
+def odd_even():
     """ Endpoint handler
 
         Request example:

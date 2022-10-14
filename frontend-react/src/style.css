@@ -66,6 +66,28 @@ mark {
   padding: 0px;
 }
 
+odd-mark {
+  border-radius: 4px;
+  border: 1px;
+  color: transparent; 
+  background-color: #c16565;
+  padding: 0px;
+}
+even-mark {
+  border-radius: 4px;
+  border: 1px;
+  color: transparent; 
+  background-color: #61d565;
+  padding: 0px;
+}
+mark {
+  border-radius: 4px;
+  border: 1px;
+  color: transparent; 
+  background-color: #c1d5e5;
+  padding: 0px;
+}
+
 button {
   display: block;
   width: 300px;

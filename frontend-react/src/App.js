@@ -21,7 +21,7 @@ const App = (props) => {
         setServerHighLights(res.data)
         setMaxStreakLength(res.data.maxx)
         })
-      .catch((err) => console.log(err))
+      .catch((err) => console.log(`🚨🚨  BACKEND ERROR: ${err.message}`))
     setStringValue(value)
     console.log(serverHighLights)
     }
