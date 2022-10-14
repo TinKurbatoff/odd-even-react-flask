@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import ReactDOM from "react-dom";
 import axios from "axios";
 import "./style.css";
 
@@ -55,7 +54,6 @@ const App = (props) => {
   // Finally render
   return (() => {
       let containerState = flag ? 'container perspective' : 'container';
-      // let maxStreakLength = maxStreakLength
       return (
         <main className={containerState} >
           <h1 className="text-white text-uppercase text-center my-4">Odd Even</h1>
