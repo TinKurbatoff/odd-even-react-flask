@@ -8,6 +8,7 @@
 	{"aceg bcdefghijklmnopqrstuvwxyzt$vxz": 4},
 	{"abcdefghijklmnopqrstuvwxyzt$vxz": 3},
 	{" aceg bcdefghijklmnopqrstuvwxyztvxz ": 5},
+	{"aaaaab<mark>bbbbb": 5},
 	{"0123456789": 0},
 	{"ab cd ef gh ij kl mn op qr st uv wx yz":1}
 ]

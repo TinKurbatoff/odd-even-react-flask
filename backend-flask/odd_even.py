@@ -98,7 +98,7 @@ def check_string(original_string):
     markdown_string = ''
     for group in joined_groups:
         group_streak = group['streak']
-        if maxx == group['length']:
+        if (group['type'] is not None) & (maxx == group['length']):
             # Max group!
             markdown_string += '<mark>' + group_streak + '</mark>'
             streaks.append(group_streak)
