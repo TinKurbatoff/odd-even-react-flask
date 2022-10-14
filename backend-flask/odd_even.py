@@ -29,12 +29,12 @@ CORS(app)  # CORS handler
 # ———————————— SERVICE FUNCTIONS —————————————
 
 
-def check_string(a_string):
+def check_string(original_string):
     """ Analyze string for streaks """
-    if not len(a_string):
+    if not len(original_string):
         # empty input
         return DEFAULT_RESPONSE
-
+    a_string = copy(original_string)
     joined_groups = []
     streaks = []
     maxx = 0
@@ -98,7 +98,7 @@ def check_string(a_string):
             # Other symbols
             markdown_string += group['streak']
 
-    return {'input': a_string,
+    return {'input': original_string,
             'markdown': markdown_string,
             'joined_groups': joined_groups,
             'maxx': maxx,

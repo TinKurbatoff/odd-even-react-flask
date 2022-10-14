@@ -70,14 +70,14 @@ odd-mark {
   border-radius: 4px;
   border: 1px;
   color: transparent; 
-  background-color: #c16565;
+  background-color: #f1b5b5;
   padding: 0px;
 }
 even-mark {
   border-radius: 4px;
   border: 1px;
   color: transparent; 
-  background-color: #61d565;
+  background-color: #a1d5a5;
   padding: 0px;
 }
 mark {
