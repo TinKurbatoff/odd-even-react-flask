@@ -49,9 +49,11 @@ def check_string(original_string):
         elif a_char.isalpha():
             group_type = ord(a_char) % 2  # Get type odd/even
             if group_type == current_group_type:
+                # Continue collection
                 current_group_chars += 1
                 current_group_len += 1
             else:
+                # Group type changed!
                 if current_group_chars:
                     # Skip empty groups
                     joined_groups.append({
@@ -66,26 +68,38 @@ def check_string(original_string):
                 current_group_start = idx
 
             if current_group_len > maxx:
+                # Wow! We got a record.
                 maxx = current_group_len
 
         else:
-            group_type = None
+            if current_group_type is not None:
+                # Group just have broken, add collected chars to the list
+                joined_groups.append({
+                    'streak': a_string[current_group_start: current_group_start + current_group_chars], 
+                    'type': current_group_type, 
+                    'length': current_group_len, 
+                    'chars': current_group_chars
+                    })
+                current_group_chars = 0
+                current_group_start = idx
+            # Collect non-streak chars
+            current_group_type = None
             current_group_len = 0
-    
+            current_group_chars += 1
+    # Save the very last group to the list
     joined_groups.append({
         'streak': a_string[current_group_start: current_group_start + current_group_chars], 
         'type': current_group_type, 
         'length': current_group_len, 
         'chars': current_group_chars
         })
-    # streaks = [a_string[maxx_start:maxx_length]]
 
-    # Build output
+    # Build the output string, collect all max groups 
     markdown_string = ''
     for group in joined_groups:
         group_streak = group['streak']
         if maxx == group['length']:
-            # Max
+            # Max group!
             markdown_string += '<mark>' + group_streak + '</mark>'
             streaks.append(group_streak)
         elif 0 == group['type']:
