@@ -98,5 +98,6 @@ const App = (props) => {
           {/* </div> */}
         </main>
       );
+}
 
 export default App;
