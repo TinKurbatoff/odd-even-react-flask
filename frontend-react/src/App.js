@@ -51,10 +51,9 @@ const App = (props) => {
     console.log(flag)
   }
 
-  // Finally render
-  return (() => {
-      let containerState = flag ? 'container perspective' : 'container';
-      return (
+  let containerState = flag ? 'container perspective' : 'container';
+
+  return (
         <main className={containerState} >
           <h1 className="text-white text-uppercase text-center my-4">Odd Even</h1>
           <div className="row">
@@ -99,8 +98,5 @@ const App = (props) => {
           {/* </div> */}
         </main>
       );
-    })();
-
-}
 
 export default App;
